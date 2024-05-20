@@ -6,13 +6,19 @@ defineProps({
 })
 
 const count = ref(0)
+
 </script>
 
 <template>
+  
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
+    <v-btn prepend-icon="$vuetify"  @click="count++"stacked>
+      count is {{ count }}
+</v-btn>
+<div id="map"></div>
+    <!-- <button type="button" @click="count++">count is {{ count }}</button> -->
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
