@@ -17,7 +17,7 @@ const routes = [
             },
             {
                 path: '/post',
-                name: 'Create_post',
+                name: 'create_post',
                 component: CreatePost,
             },
             {

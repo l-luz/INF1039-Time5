@@ -1,7 +1,6 @@
 <template>
-  <body>
-    <div>
-      <div class="post-form">
+  <v-container>
+      <v-card class="post-form">
         <input
           v-model="nome"
           placeholder="Digite seu nome"
@@ -34,9 +33,8 @@
         <button v-if="imagem" @click="postarMensagem" class="submit-button">
           Postar
         </button>
-      </div>
-    </div>
-  </body>
+      </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -86,46 +84,6 @@
 </script>
 
 <style scoped>
-  /* Estilos do componente */
-
-  body {
-    background-color: black;
-    padding: 100px;
-  }
-  .navbar {
-    background-color: #6a1b9a; /* Cor roxa mais forte */
-    padding: 10px 20px;
-    color: white;
-  }
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-  }
-  .profile-picture {
-    width: 40px; /* Tamanho da foto de perfil */
-    height: 40px; /* Tamanho da foto de perfil */
-    border-radius: 50%; /* Para tornar a imagem circular */
-    margin-right: 10px; /* Espaçamento entre a foto e o texto */
-  }
-  .logo {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 1.2em; /* Tamanho da fonte do logo */
-  }
-  .navbar-menu {
-    display: flex;
-    justify-content: flex-end;
-  }
-  .navbar-start {
-    display: flex;
-  }
-  .navbar-item {
-    padding: 10px;
-    margin: 0 5px;
-    color: white;
-    text-decoration: none;
-  }
   .post-form {
     background-color: purple;
     padding: 20px;
@@ -159,9 +117,6 @@
   .get-location-button {
     background-color: #007bff;
     color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
     border-radius: 5px;
   }
 </style>
