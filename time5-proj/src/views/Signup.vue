@@ -1,116 +1,115 @@
 <template>
-    <v-card>
-        
-    </v-card>
-</template>
-<!-- <template>
-    <div>
-      <h3> Start with ErriJota</h3>
-      <v-btn @click="startFirebaseUI" :text="user ? 'Logout' : 'RSVP'"> </v-btn>
-      <section id="firebaseui-auth-container"></section>
-  
-      <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
-        <div class="text-subtitle-1 text-medium-emphasis">Account</div>
-  
-        <v-text-field density="compact" placeholder="Email address" prepend-inner-icon="mdi-email-outline"
-          variant="outlined"></v-text-field>
-  
-        <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-          Password
-  
-          <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer" target="_blank">
-            Forgot login password?</a>
-        </div>
-  
-        <v-text-field :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          :type="showPassword ? 'text' : 'password'" density="compact" placeholder="Enter your password"
+  <div>
+    <h3> Start with ErriJota</h3>
+    <v-card class="mx-auto pa-12 pb-8" elevation="8" min-width="500" rounded="lg">
+      <v-form v-model="valid" ref="form">
+        <v-text-field density="compact" placeholder="Nome" prepend-inner-icon="mdi-account-edit-outline"
+          variant="outlined" v-model="nome" :rules="nameRules"></v-text-field>
+
+        <v-text-field density="compact" placeholder="Nome de usuário" prepend-inner-icon="mdi-badge-account-outline"
+          variant="outlined" v-model="username"></v-text-field>
+
+        <v-text-field density="compact" placeholder="Email" prepend-inner-icon="mdi-email-outline" variant="outlined"
+          v-model="email"></v-text-field>
+
+        <v-text-field density="compact" placeholder="Confirme seu email" prepend-inner-icon="mdi-email-outline"
+          variant="outlined" v-model="emailConf" :rules="[emailMatchRule]"></v-text-field>
+
+        <v-text-field :append-inner-icon="!showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="showPassword ? 'text' : 'password'" density="compact" placeholder="Insira sua senha"
+          prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="showPassword = !showPassword"
+          v-model="senha"></v-text-field>
+
+        <v-text-field :append-inner-icon="!showConfPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="showConfPassword ? 'text' : 'password'" density="compact" placeholder="Confirme sua senha"
           prepend-inner-icon="mdi-lock-outline" variant="outlined"
-          @click:append-inner="showPassword = !showPassword"></v-text-field>
-  
-        <v-btn class="mb-8" color="blue" size="large" variant="tonal" block>
-          Log In
+          @click:append-inner="showConfPassword = !showConfPassword" v-model="senhaConf"
+          :rules="[passwordMatchRule]"></v-text-field>
+
+        <v-btn type="submit" class="mb-8" color="blue" size="large" variant="tonal" block @click.prevent="validate">
+          Registrar
         </v-btn>
-  
-        <v-card-text class="text-center">
-          <a class="text-blue text-decoration-none" href="#" rel="noopener noreferrer" target="_blank">
-            Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
-          </a>
-        </v-card-text>
-      </v-card>
-    </div>
-  </template>
-  
-  <script>
-  import { initializeApp } from "firebase/app";
-  import { getAuth, EmailAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
-  import * as firebaseui from 'firebaseui';
-  import firebaseConfig from '../firebaseConfig';
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  
-  const uiConfig = {
-    credentialHelper: firebaseui.auth.CredentialHelper.NONE,
-    signInFlow: 'popup',
-    signInOptions: [
-      // Email / Password Provider.
-      EmailAuthProvider.PROVIDER_ID,
-    ],
-    callbacks: {
-      signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-        // Handle sign-in.
-        // Return false to avoid redirect.
-        return false;
-      },
-    },
-  };
-  const ui = new firebaseui.auth.AuthUI(auth);
-  
-  
-  export default {
-    data: () => ({
+      </v-form>
+
+    </v-card>
+
+  </div>
+</template>
+
+<script>
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import auth from '../firebaseConfig/auth';
+import {
+  addDoc,
+  collection
+} from 'firebase/firestore';
+import db from '../firebaseConfig/database';
+
+export default {
+  data: () => (
+    {
+      valid: false,
       email: '',
+      emailConf: '',
       senha: '',
+      senhaConf: '',
+      nome: '',
+      username: '',
       showPassword: false,
-      rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 8 || 'Min 8 characters',
-        emailMatch: () => (`The email and password you entered don't match`),
-        compare: (value,) => (`As senhas inseridas não correspondem`)
-      },
-      user: !!auth,
-  
+      showConfPassword: false,
+      nameRules: [
+        value => !!value || 'Name is required.',
+      ],
     }),
-  
-    methods: {
-      startFirebaseUI() {
-        if (auth.currentUser) {
-          // User is signed in; allows user to sign out
-          signOut(auth);
-        } else {
-          // No user is signed in; allows user to sign in
-          ui.start('#firebaseui-auth-container', uiConfig);
-        }
-  
-      },
-      async validate() {
-        const { valid } = await this.$refs.form.validate();
-  
-        if (valid) {
-          alert('Form is valid');
-        } else {
-          alert('Form is invalid');
-        }
-      },
+  computed: {
+    emailMatchRule() {
+      return value => (this.email === this.emailConf) || 'Os emails não coincidem.';
     },
-  };
-  console.log(auth)
-  console.log(!!auth)
-  onAuthStateChanged(auth, user => {
-      if (user) {
-        this.user = true;
-      } else {
-        this.user = false;
+    passwordMatchRule() {
+      return value => (this.senha === this.senhaConf) || 'As senhas não coincidem.';
+    }
+
+  },
+
+  methods: {
+    async validate() {
+      const { valid } = await this.$refs.form.validate();
+
+      if (valid) {
+          try {
+
+            createUserWithEmailAndPassword(auth, this.email, this.senha)
+              .then(() => {
+                console.log("create user");
+                addDoc(collection(db, 'usuarios'), {
+                  nome: this.nome,
+                  username: this.username,
+                  timestamp: Date.now(),
+                  usuario_id: auth.currentUser.uid
+                });
+                console.log("ok user");
+
+                updateProfile(auth.currentUser, {
+                  displayName: this.username,
+                  name: this.nome
+                });
+                console.log("create profile");
+
+                this.$router.push({ name: 'home' })
+              })
+          }
+          catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage);
+            alert(error);
+            console.log(error)
+            console.log(errorMessage)
+            console.log(errorCode)
+          }
       }
-    });
-  
-  </script> -->
+    },
+  },
+};
+
+</script>

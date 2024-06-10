@@ -34,16 +34,15 @@
 
 <script>
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import auth from '../firebase/auth';
-
+import auth from '../firebaseConfig/auth';
 export default {
   data: () => ({
     email: '',
     senha: '',
     showPassword: false,
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 8 || 'Min 8 characters',
+      // required: value => !!value || 'Required.',
+      // min: v => v.length >= 8 || 'Min 8 characters',
       emailMatch: () => (`The email and password you entered don't match`),
       compare: (value,) => (`As senhas inseridas não correspondem`)
     },
@@ -61,21 +60,22 @@ export default {
     },
     signIn() {
       signInWithEmailAndPassword(auth, this.email, this.senha)
+      .then(()=> this.$router.push({ name: 'home' }))
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(error);
+
         });
     },
     resetPassword() {
-      auth.generatePasswordResetLink(userEmail, actionCodeSettings)
-      .then((link) => {
-          // Construct password reset email template, embed the link and send
-          // using custom SMTP server.
-          return sendCustomPasswordResetEmail(userEmail, displayName, link);
-        })
-        .catch((error) => console.log(error));
-
+      // auth.generatePasswordResetLink(userEmail, actionCodeSettings)
+      // .then((link) => {
+      //     // Construct password reset email template, embed the link and send
+      //     // using custom SMTP server.
+      //     return sendCustomPasswordResetEmail(userEmail, displayName, link);
+      //   })
+      //   .catch((error) => console.log(error));
     },
   },
 };

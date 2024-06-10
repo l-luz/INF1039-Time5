@@ -116,7 +116,6 @@
   }
   .get-location-button {
     background-color: #007bff;
-    color: #fff;
     border-radius: 5px;
   }
 </style>
