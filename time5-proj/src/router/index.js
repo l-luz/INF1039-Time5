@@ -4,6 +4,7 @@ import Login from '../views/Login.vue';
 import ListPosts from '../components/ListPosts.vue';
 import DefaultLayout from '../components/DefaultLayout.vue';
 import CreatePost from '../views/CreatePost.vue';
+import LandPage from '../views/LandPage.vue';
 
 const routes = [
     {
@@ -13,7 +14,7 @@ const routes = [
             {
                 path: '/',
                 name: 'home',
-                component: ListPosts
+                component: LandPage
             },
             {
                 path: '/post',

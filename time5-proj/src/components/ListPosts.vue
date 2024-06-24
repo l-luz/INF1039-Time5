@@ -1,4 +1,3 @@
-<!-- <script setup> -->
 <template>
   <v-sheet>
     <v-slide-group
@@ -10,20 +9,28 @@
         v-for="item in Posts"
         :key="item.id"
       >
-          <PostLandPage  :username="item.username" :foto="item.foto" :midia="item.midia" :descricao="item.descricao"
-            :key="item.id" />
+          <UserPost  
+            :username="item.username" 
+            :foto="item.foto" 
+            :midia="item.midia" 
+            :descricao="item.descricao" 
+            :rating="item.rating"
+            :key="item.id" 
+          >
+          </UserPost>
       </v-slide-group-item>
     </v-slide-group>
 
 </v-sheet>
 </template>
 <script>
-import PostLandPage from './PostLandPage.vue';
+import { toNumber } from 'lodash';
+import UserPost from './UserPost.vue';
 
 export default {
   name: "ListPosts",
   components: {
-    PostLandPage,
+    UserPost,
   },
   data() {
     return {
@@ -31,6 +38,8 @@ export default {
         {
             username: "Clara",
             foto: "https://img.freepik.com/fotos-gratis/foto-na-cabeca-de-uma-mulher-feliz-rindo-e-sorrindo-amplamente_273609-28720.jpg",
+            descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            rating: 3,
             midia:[
                 {
                     src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
@@ -44,9 +53,7 @@ export default {
                 {
                     src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
                 },
-                
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
           // maplink: {},
           //userLink: {},
 
@@ -59,7 +66,8 @@ export default {
                     src: 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68',
                 },
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          rating: 5,
           // maplink: {},
           //userLink: {},
 
@@ -75,7 +83,8 @@ export default {
                     src: 'https://fastly.picsum.photos/id/14/2500/1667.jpg?hmac=ssQyTcZRRumHXVbQAVlXTx-MGBxm6NHWD3SryQ48G-o',
                 },
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          rating: 3,
           // maplink: {},
           //userLink: {},
 
@@ -94,7 +103,8 @@ export default {
                     src: 'https://fastly.picsum.photos/id/145/4288/2848.jpg?hmac=UkhcwQUE-vRBFXzDN1trCwWigpm7MXG5Bl5Ji103QG4',
                 },
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          rating: 0,
           // maplink: {},
           //userLink: {},
 
@@ -116,7 +126,8 @@ export default {
                     src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
                 },
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          rating: 2,
           // maplink: {},
           //userLink: {},
 
@@ -129,7 +140,8 @@ export default {
                     src: 'https://fastly.picsum.photos/id/155/3264/2176.jpg?hmac=Zgf_oGMJeg18XoKBFmJgp2DgHMRYuorXlDx5wLII9nU',
                 },
             ],
-          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          rating: 4.5,
           // maplink: {},
           //userLink: {},
 
