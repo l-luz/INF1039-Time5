@@ -41,7 +41,9 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import auth from '../firebaseConfig/auth';
 import {
   addDoc,
-  collection
+  setDoc,
+  collection,
+  doc
 } from 'firebase/firestore';
 import db from '../firebaseConfig/database';
 
@@ -79,23 +81,30 @@ export default {
           try {
 
             createUserWithEmailAndPassword(auth, this.email, this.senha)
-              .then(() => {
-                console.log("create user");
-                addDoc(collection(db, 'usuarios'), {
+              .then((userCredencial) => {
+                const userId = userCredencial.user.uid; 
+                const userDocRef = doc(db, 'usuarios', userId); 
+
+                // Use setDoc directly on the userDocRef (DocumentReference)
+                setDoc(userDocRef, { 
                   nome: this.nome,
                   username: this.username,
-                  timestamp: Date.now(),
-                  usuario_id: auth.currentUser.uid
-                });
-                console.log("ok user");
+                  timestamp: Date.now(), // Or serverTimestamp() for server-side timestamps
+                })
+                .then(() => {
+                  console.log("ok user");
 
-                updateProfile(auth.currentUser, {
-                  displayName: this.username,
-                  name: this.nome
-                });
-                console.log("create profile");
+                  updateProfile(auth.currentUser, {
+                    displayName: this.username,
+                    name: this.nome
+                  });
+                  console.log("create profile");
 
-                this.$router.push({ name: 'home' })
+                  this.$router.push({ name: 'home' });
+                })
+                .catch((error) => {
+                  console.error("Error adding user document: ", error);
+                }); 
               })
           }
           catch (error) {
@@ -113,3 +122,42 @@ export default {
 };
 
 </script>
+<!--  adaptar depois para salvar os arquivos
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// ... your other imports and Firebase initialization ...
+
+const storage = getStorage();
+
+// Assuming 'this.files' is an array of File objects
+const uploadPromises = this.files.map(file => {
+  const storageRef = ref(storage, `user_posts/${user.uid}/${file.name}`); // Customize the path as needed
+  return uploadBytes(storageRef, file);
+});
+
+Promise.all(uploadPromises)
+  .then(snapshots => {
+    const downloadURLPromises = snapshots.map(snapshot => getDownloadURL(snapshot.ref));
+    return Promise.all(downloadURLPromises);
+  })
+  .then(downloadURLs => {
+    var data = {
+      rating: this.rating,
+      post: this.post,
+      localizacao: geoInfo,
+      imagens: downloadURLs, // Store the array of download URLs
+      timestamp: Date.now(),
+    };
+
+    // Now you can add the data to Firestore
+    addDoc(collection(userDoc, 'Posts'), data)
+      .then(() => {
+        console.log('Post added successfully!');
+      })
+      .catch((error) => {
+        console.error('Error adding post: ', error);
+      });
+  })
+  .catch(error => {
+    console.error('Error uploading files: ', error);
+  }); -->

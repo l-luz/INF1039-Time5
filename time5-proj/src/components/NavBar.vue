@@ -19,7 +19,7 @@
             <v-btn v-if="!logged" variant="outlined" :to="{ name: 'login' }" text="Login" />
             <v-btn v-if="!logged" class="pink-button" :to="{ name: 'signup' }" text="Register" />
 
-            <v-menu
+            <v-menu v-if="logged"
               v-model="menu"
               :close-on-content-click="false"
               location="end"
@@ -34,13 +34,14 @@
                 src="https://cdn.vuetifyjs.com/images/john.jpg"
               ></v-img>
         </v-avatar>
-          
+          {{ userName }}
         </v-btn>
       </template>
 
-      <v-card min-width="300">
-        <v-list>
-          <v-list-item
+      <v-card min-width="300" v-if="logged">
+        <v-list v-if="logged">
+          <v-list-item 
+            v-if="logged"
             prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
             subtitle="Founder of Vuetify"
             title="John Leider"
@@ -64,7 +65,7 @@
       </v-card>
     </v-menu>
     <v-spacer v-if="logged" />
-    <v-spacer v-if="logged" />
+    <v-spacer />
 
         </v-app-bar>
 
@@ -86,6 +87,8 @@
 <script>
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import auth from '../firebaseConfig/auth';
+import { doc, getDoc } from "firebase/firestore";
+import db from '../firebaseConfig/database';
 
 
 export default {
@@ -111,7 +114,24 @@ export default {
     created() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                this.name = user.email;
+                const userDocRef = doc(db, 'usuarios', user.uid);
+                // Get the user document
+                getDoc(userDocRef)
+                  .then((docSnapshot) => {
+                    if (docSnapshot.exists()) {
+                      const userData = docSnapshot.data();
+                      console.log("User data:", userData);
+                      this.userName = userData.username;
+
+                      // Do something with the user data
+                    } else {
+                      console.log("No such document!");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error getting user document:", error);
+                  });
+
             } else {
 
             }
