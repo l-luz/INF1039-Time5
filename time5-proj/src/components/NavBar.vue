@@ -9,7 +9,7 @@
             <v-btn class="nav-button" text="Em alta" />
             <v-btn class="nav-button" text="Melhores" />
             <v-btn class="nav-button" text="Perto de Você" />
-            <v-btn class="nav-button" text="Mapa" />
+            <v-btn class="nav-button" text="Mapa" :to="{name: 'mapa'}" />
             <v-btn class="nav-button" text="Quem Somos" />
             <v-spacer />
             <v-text-field class="h-75 py-1" single-line density="compact" prepend-inner-icon="mdi-magnify"

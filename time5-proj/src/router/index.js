@@ -5,6 +5,7 @@ import ListPosts from '../components/ListPosts.vue';
 import DefaultLayout from '../components/DefaultLayout.vue';
 import CreatePost from '../views/CreatePost.vue';
 import LandPage from '../views/LandPage.vue';
+import Mapa from '../views/Mapa.vue';
 
 const routes = [
     {
@@ -31,6 +32,12 @@ const routes = [
                 name: 'signup',
                 component: Signup
             },
+            {
+                path: '/mapa',
+                name: 'mapa',
+                component: Mapa
+            },
+
         ],
     },
 ];
