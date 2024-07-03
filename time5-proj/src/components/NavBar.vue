@@ -6,9 +6,9 @@
             
             <img src="/hugoLogoTitle.png" width="auto" height="65%" />
             <v-btn class="nav-button" text="Home" :to="{ name: 'home' }" />
-            <v-btn class="nav-button" text="Em alta" />
-            <v-btn class="nav-button" text="Melhores" />
-            <v-btn class="nav-button" text="Perto de Você" />
+            <v-btn class="nav-button" text="Em alta" :to="{name: 'em_alta'}"/>
+            <v-btn class="nav-button" text="Melhores" :to="{name: 'melhores'}" />
+            <v-btn class="nav-button" text="Perto de Você" :to="{name: 'perto_de_voce'}"/>
             <v-btn class="nav-button" text="Mapa" :to="{name: 'mapa'}" />
             <v-btn class="nav-button" text="Quem Somos" />
             <v-spacer />
@@ -53,8 +53,8 @@
 
         <v-list>
           
-          <v-list-item title="Perfil" />
-          <v-list-item title="Seguindo"  to:/>
+          <v-list-item title="Perfil" :to="{name: 'user_profile'}"/>
+          <v-list-item title="Seguindo"  />
           <v-list-item title="Streak" />
           <v-list-item title="Postagem" :to="{ name: 'create_post' }"/>
         </v-list>

@@ -2,7 +2,7 @@
     <br />
     <br />
     <br />
-    <v-container fill-height>
+    <v-container fill-height class="no-scroll">
         <v-row >
             <v-col cols="4" 
             class="text-center text-md-left white--text d-inline-block "
@@ -14,11 +14,13 @@
             <v-col cols="8"  >
                 <v-img src="/hugoLandPage.png" cover ></v-img>
             </v-col>
+            
         </v-row>
+        <hr class="custom2-hr" />
+
     </v-container>
     
-    <hr class="custom2-hr" />
-  
+<!--   
     <v-container fill-height>
       <v-toolbar    title="EM ALTA"    >
           <v-spacer></v-spacer>
@@ -61,25 +63,6 @@
         </v-container>
       </v-container>
 
-<!-- 
-    <v-container>
-      <v-toolbar title="MELHORES" >
-          <v-combobox 
-            :items="['DO DIA', 'DA SEMANA', 'DO MÊS', 'DO ANO', 'DE SEMPRE']"
-            variant="outlined"
-            class="h-75 py-1"  density="compact"
-            single-line 
-          />          
-          <v-spacer></v-spacer>
-          <link> Ver mais: <link>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <img src="/strap-3.png">
-          <PostLandPage  :username="username" :foto="foto" :midia="midia" :descricao="descricao"
-            :key="id" />
-        </img>
-
-    </v-container> -->
     <v-container>
       <v-toolbar    title="EM ALTA"    >
           <v-spacer></v-spacer>
@@ -89,7 +72,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
 
-    </v-container>
+    </v-container> -->
 
 </template>
 <script>
@@ -141,6 +124,8 @@ export default {
   background-image: url('/h-straps.png'); /* Caminho para a sua imagem */
   background-size: cover; /* Ajuste para cobrir completamente a área */
   background-repeat: no-repeat; /* Evita a repetição da imagem */
+    /* background-position: center -50px; Ajuste a posição vertical para cortar a parte superior da imagem */
+
 }
 
 .background-image {

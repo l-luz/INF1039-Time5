@@ -12,6 +12,9 @@ import store from './views/store'
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {
+    defaultTheme: 'dark',
+  }
 });
 
 

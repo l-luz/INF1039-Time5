@@ -82,10 +82,8 @@ import {
   collection,
   doc
 } from 'firebase/firestore';
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import db from '../firebaseConfig/database';
-
-// const storage  = db.getStorage();
 
 export default {
   data() {
@@ -113,7 +111,7 @@ export default {
             coordinates: this.localizacao
           },
           properties: {
-            name: "PUC - Rio"
+            name: "PUC - Rio" //todo: 
         }
       }
       var data = {
@@ -121,24 +119,44 @@ export default {
         post: this.post,
         localizacao: geoInfo,
         timestamp: Date.now(),
+        imageURLs: [],
       }
-        // if (this.files) {
-        //   const userStRef = ref(storage, 'usuarios', user.uid);
 
-        //   const storageRef = ref(userStRef, 'images/' + this.files.name); // Adjust the path as needed
-        //   uploadBytes(storageRef, this.files);
-        //   this.downloadURL = getDownloadURL(storageRef);
-        // }
+      if (this.files.length > 0) { // Check if files were selected
+        const storage = getStorage();
+        const user = auth.currentUser;
+        console.log("User UID:", user.uid);
 
-        const userRef = doc(db, 'usuarios', user.uid); // Reference to the user document
-        const postsCollectionRef = collection(userRef, 'Posts'); 
-        addDoc(postsCollectionRef, data)
-        .then(() => {
-            console.log('Post added successfully!');
-        })
-        .catch((error) => {
-            console.error('Error adding post: ', error);
+        this.files.forEach(file => {
+          console.log("File object:", file);
+          const storageRef = ref(storage, `usuarios/${user.uid}/images/${file.name}`);
+          uploadBytes(storageRef, file)
+            .then((snapshot) => {
+              console.log('Uploaded a blob or file!');
+              // Get the download URL for the uploaded file
+              return getDownloadURL(snapshot.ref);
+            })
+            .then((downloadURL) => {
+              console.log('File available at', downloadURL);
+              data.imageURLs.push(downloadURL);
+            }).then(()=>{
+              const userRef = doc(db, 'usuarios', user.uid); // Reference to the user document
+              const postsCollectionRef = collection(userRef, 'posts'); 
+              addDoc(postsCollectionRef, data)
+              .then(() => {
+                  console.log('Post added successfully!');
+              })
+              .catch((error) => {
+                  console.error('Error adding post: ', error);
+              });
+
+            })
+            .catch((error) => {
+              console.error('Error uploading file: ', error);
+            });
         });
+      }
+
 
       this.post = ''
       this.rating = ''
